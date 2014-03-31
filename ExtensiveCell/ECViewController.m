@@ -121,9 +121,17 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UIView *contentView = [self viewForContainerAtIndexPath:indexPath];
-    if ([self isExtendedCellIndexPath:indexPath] && contentView) {
-        return 2*contentView.frame.origin.y + contentView.frame.size.height;
+    
+    if ([self isExtendedCellIndexPath:indexPath]) {
+        UIView *contentView = [self viewForContainerAtIndexPath:indexPath];
+        if(contentView)
+        {
+            return 2*contentView.frame.origin.y + contentView.frame.size.height;
+        }
+        else{
+            return [self heightForExtensiveCellAtIndexPath:indexPath];
+        }
+
     } else {
         return [self heightForExtensiveCellAtIndexPath:indexPath];
     }
@@ -135,14 +143,18 @@
 	{
 		NSString				*identifier = [ExtensiveCellContainer reusableIdentifier];
 		ExtensiveCellContainer	*cell		= [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
-		[cell addContentView:[self viewForContainerAtIndexPath:indexPath]];
+        
+        NSIndexPath *tmpPath = [NSIndexPath indexPathForItem:indexPath.row -1 inSection:indexPath.section];
+        
+		//[cell addContentView:[self viewForContainerAtIndexPath:indexPath]];
+        [cell addContentView:[self viewForContainerAtIndexPath:tmpPath]];
 		return cell;
 	}
 	else
 	{
         UITableViewCell *cell = nil;
         
-        if (self.selectedRowIndexPath)
+        if (self.selectedRowIndexPath&&self.selectedRowIndexPath.row < indexPath.row)
         {
             NSIndexPath *tmpIndexPath = [NSIndexPath indexPathForRow:(indexPath.row - 1) inSection:indexPath.section];
             cell = [self extensiveCellForRowIndexPath:tmpIndexPath];
