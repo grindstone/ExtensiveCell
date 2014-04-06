@@ -83,6 +83,9 @@
 
 - (void)extendCellAtIndexPath:(NSIndexPath *)indexPath;
 
+
+-(void)reset;
+
 @end
 
 @interface ECViewController : UIViewController <ECTableViewDataSource>

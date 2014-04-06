@@ -24,6 +24,10 @@
     
 }
 
+-(void)reset{
+    self.selectedRowIndexPath = nil;
+}
+
 #pragma mark Selection mecanism
 
 - (void)setSelectedRowIndexPath:(NSIndexPath *)selectedRowIndexPath
